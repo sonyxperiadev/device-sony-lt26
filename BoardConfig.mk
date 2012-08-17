@@ -33,6 +33,9 @@ TARGET_ARCH := arm
 TARGET_ARCH_VARIANT := armv7-a-neon
 ARCH_ARM_HAVE_TLS_REGISTER := true
 
+USE_OPENGL_RENDERER := true
+BOARD_EGL_CFG := device/sony/lt26/config/egl.cfg
+
 BOARD_USES_GENERIC_AUDIO := false
 BOARD_USES_ALSA_AUDIO := false
 

@@ -1,0 +1,8 @@
+# this corresponds to kernel/arch/arm/mach-msm/keypad-fuji_nozomi.c
+#
+# defines for values are in frameworks/base/include/ui/KeycodeLabels.h
+
+# KEY_VOLUMEDOWN
+
+key 114   VOLUME_DOWN       WAKE
+

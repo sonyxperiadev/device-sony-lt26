@@ -1,0 +1,8 @@
+# this corresponds to kernel/arch/arm/mach-msm/keypad-fuji_nozomi.c
+#
+# defines for values are in frameworks/base/include/ui/KeycodeLabels.h
+
+# CAMERA Related Key
+key 212   CAMERA            WAKE
+key 528   FOCUS
+

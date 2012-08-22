@@ -1,4 +1,4 @@
-import init.lt26.usb.rc
+import init.semc.usb.rc
 
 on early-init
     export EXTERNAL_STORAGE /storage/sdcard0

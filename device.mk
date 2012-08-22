@@ -60,12 +60,12 @@ PRODUCT_COPY_FILES += \
 
 # Custom init / uevent
 PRODUCT_COPY_FILES += \
-    device/sony/lt26/config/init.lt26.rc:root/init.lt26.rc \
-    device/sony/lt26/config/ueventd.lt26.rc:root/ueventd.lt26.rc
+    device/sony/lt26/config/init.semc.rc:root/init.semc.rc \
+    device/sony/lt26/config/ueventd.semc.rc:root/ueventd.semc.rc
 
 # USB function switching
 PRODUCT_COPY_FILES += \
-   $(LOCAL_PATH)/config/init.lt26.usb.rc:root/init.lt26.usb.rc
+   $(LOCAL_PATH)/config/init.semc.usb.rc:root/init.semc.usb.rc
 
 # Key layouts and touchscreen
 PRODUCT_COPY_FILES += \

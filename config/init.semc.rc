@@ -118,9 +118,6 @@ on boot
     mkdir /dev/bus 0711 system system
     mkdir /dev/bus/usb 0711 system system
 
-    write /sys/class/android_usb/android0/iManufacturer $ro.product.manufacturer
-    write /sys/class/android_usb/android0/iProduct $ro.product.model
-
     setprop ro.wifi.wps_enable true
 
     write /proc/sys/kernel/sysrq 0
@@ -217,11 +214,6 @@ on boot
     insmod /system/lib/modules/bcmdhd.ko nvram_path=/system/etc/wifi/calibration iface_name=wlan0
 
 on init
-    write /sys/class/android_usb/android0/iSerial $ro.serialno
-    write /sys/class/android_usb/android0/f_rndis/manufacturer $ro.product.manufacturer
-    write /sys/class/android_usb/android0/f_rndis/vendorID 0fce
-    write /sys/class/android_usb/android0/f_rndis/wceis 1
-
     # create mountpoint
     mkdir /storage/usbdisk 0000 system system
 
@@ -242,7 +234,7 @@ on post-fs-data
     chmod 0660 /sys/devices/platform/msm_hsusb/gadget/lun1/file
     write /sys/class/android_usb/f_mass_storage/inquiry_string "SONY    Mass Storage    0100"
     write /sys/class/android_usb/f_cdrom/cdrom_inquiry_string "SONY    CD-ROM          0100"
-    write /sys/class/android_usb/f_mass_storage/serial_number $ro.serialno
+    write /sys/class/android_usb/f_mass_storage/serial_number ${ro.serialno}
     write /sys/class/android_usb/f_mass_storage/eui64_id 000AD90000000000
     write /sys/devices/platform/msm_hsusb/gadget/lun0/nofua 1
     write /sys/devices/platform/msm_hsusb/gadget/lun1/nofua 1

@@ -26,6 +26,8 @@ PRODUCT_COPY_FILES += \
 PRODUCT_PACKAGES := \
     lights.lt26
 
+PRODUCT_CHARACTERISTICS := nosdcard
+
 DEVICE_PACKAGE_OVERLAYS += device/sony/lt26/overlay
 
 # The gps config appropriate for this device

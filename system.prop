@@ -1,1 +1,4 @@
 ro.sf.lcd_density=320
+
+wifi.interface=wlan0
+wifi.supplicant_scan_interval=15

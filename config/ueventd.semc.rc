@@ -1,6 +1,10 @@
 /dev/msm_vpe_standalone              0777   system     system
-/sys/devices/i2c-3/3-0040/leds/* delay_on  0644 system system
-/sys/devices/i2c-3/3-0040/leds/* delay_off 0644 system system
+
+/sys/devices/i2c-3/3-0040/leds/lcd-backlight als/enable 0600 system system
+/sys/devices/i2c-3/3-0040/leds/* delay_on   0600 system system
+/sys/devices/i2c-3/3-0040/leds/* delay_off  0600 system system
+/sys/devices/i2c-3/3-0040/leds/* brightness 0600 system system
+/sys/devices/i2c-3/3-0040/leds/* trigger    0600 system system
 
 ### start from CAF/system/core/rootdir/ueventd.rc
 /dev/rtc0                 0600   system     system
@@ -127,18 +131,4 @@
 # Accelerometer device permission
 /sys/devices/virtual/input/input* bma250_rate 0640 system system
 
-# Permissions for Liblights.
-/sys/class/leds/green/brightness 0600 system system
-/sys/class/leds/green/trigger 0600 system system
-/sys/class/leds/red/brightness 0600 system system
-/sys/class/leds/red/trigger 0600 system system
-/sys/class/leds/blue/brightness 0600 system system
-/sys/class/leds/blue/trigger 0600 system system
-/sys/class/leds/button-backlight/brightness 0600 system system
-/sys/class/leds/button-backlight/trigger 0600 system system
-/sys/class/leds/lcd-backlight/brightness 0600 system system
-/sys/class/leds/lcd-backlight/als/curve 0600 system system
-/sys/class/leds/lcd-backlight/als/enable 0600 system system
-/sys/class/leds/keyboard-backlight/brightness 0600 system system
-/sys/devices/i2c-3/3-0040/adc_als_value 0600 system system
 

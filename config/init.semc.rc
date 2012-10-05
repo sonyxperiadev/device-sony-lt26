@@ -4,7 +4,6 @@ on early-init
     export EXTERNAL_STORAGE /storage/sdcard0
     mkdir /storage 0050 system sdcard_r
     mkdir /storage/sdcard0 0000 system system
-    mkdir /storage/sdcard1 0000 system system
     # for backwards compatibility
     symlink /storage/sdcard0 /sdcard
     symlink /storage/sdcard0 /mnt/sdcard
@@ -223,21 +222,17 @@ on init
     write /sys/class/android_usb/android0/f_rndis/vendorID 0fce
     write /sys/class/android_usb/android0/f_rndis/wceis 1
 
-    # setup the global environment
-    export EXTERNAL_STORAGE_USB /mnt/usbdisk
-
     # create mountpoint
-    mkdir /mnt/usbdisk 0000 system system
+    mkdir /storage/usbdisk 0000 system system
 
     # Create symlink
-    symlink /mnt/usbdisk /usbdisk
+    symlink /storage/usbdisk /usbdisk
+    symlink /storage/usbdisk /mnt/usbdisk
 
     # setup the global environment
-    export SECONDARY_STORAGE /mnt/usbdisk
+    export SECONDARY_STORAGE /storage/usbdisk
 
 on post-fs-data
-    mkdir /data/media 0770 media_rw media_rw
-    chown media_rw media_rw /data/media
     mkdir /data/misc/wifi 0770 wifi wifi
     mkdir /data/misc/wifi/sockets 0770 wifi wifi
     mkdir /data/misc/dhcp 0770 dhcp dhcp

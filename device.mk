@@ -52,10 +52,6 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/vold.fstab:system/etc/vold.fstab \
    $(LOCAL_PATH)/prebuilt/hw_config.sh:system/etc/hw_config.sh
 
-# EGL config
-PRODUCT_COPY_FILES += \
-    device/sony/lt26/config/egl.cfg:system/lib/egl/egl.cfg
-
 # Common Qualcomm scripts
 PRODUCT_COPY_FILES += \
     device/sony/lt26/config/init.qcom.efs.sync.sh:system/etc/init.qcom.efs.sync.sh

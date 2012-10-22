@@ -24,7 +24,8 @@ PRODUCT_COPY_FILES += \
     $(LOCAL_KERNEL):kernel
 
 PRODUCT_PACKAGES := \
-    lights.lt26
+    lights.lt26 \
+    e2fsck
 
 PRODUCT_CHARACTERISTICS := nosdcard
 

@@ -12,7 +12,6 @@ Put the following snippet in .repo/local_manifest.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
   <remote  name="sony" fetch="git://github.com/sonyxperiadev/" />
-  <remove-project name="device/sony/lt26" />
   <project path="device/sony/lt26" name="device-sony-lt26" remote="sony" revision="master" />
 </manifest>
 

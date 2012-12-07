@@ -2,3 +2,6 @@ ro.sf.lcd_density=320
 
 wifi.interface=wlan0
 wifi.supplicant_scan_interval=15
+
+rild.libpath=/system/lib/libril-qc-qmi-1.so
+rild.libargs=-d /dev/smd0

@@ -8,11 +8,10 @@ To setup a tree and build images for the device do the following:
 repo init as described by Google over at:
 http://source.android.com/source/downloading.html
 
-Put the following snippet in .repo/local_manifest.xml
+Put the following snippet in .repo/local_manifests/lt26.xml
 <?xml version="1.0" encoding="UTF-8"?>
 <manifest>
   <remote  name="sony" fetch="git://github.com/sonyxperiadev/" />
-  <remove-project name="device/sony/lt26" />
   <project path="device/sony/lt26" name="device-sony-lt26" remote="sony" revision="master" />
 </manifest>
 

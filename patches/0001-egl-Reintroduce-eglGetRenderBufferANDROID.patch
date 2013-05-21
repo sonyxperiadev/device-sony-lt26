@@ -1,0 +1,163 @@
+From 4e85c47d1af0d5a50ec830eccf374874f6683982 Mon Sep 17 00:00:00 2001
+From: Bjorn Andersson <bjorn.andersson@sonymobile.com>
+Date: Tue, 21 Aug 2012 22:22:02 -0700
+Subject: [PATCH] egl: Reintroduce eglGetRenderBufferANDROID
+
+eglGetRenderBufferANDROID was removed as it had no users. This commit
+reintroduces this extensions as it's used by Qualcomm graphics HAL.
+
+Change-Id: I493306830a0d4f8722a42bcc84fb49236afdabeb
+
+Conflicts:
+	opengl/libs/EGL/eglApi.cpp
+---
+ opengl/include/EGL/eglext.h | 10 ++++++++++
+ opengl/libagl/egl.cpp       | 28 ++++++++++++++++++++++++++++
+ opengl/libs/EGL/eglApi.cpp  | 18 ++++++++++++++++++
+ 3 files changed, 56 insertions(+)
+
+diff --git a/opengl/include/EGL/eglext.h b/opengl/include/EGL/eglext.h
+index 8578874..38145e3 100644
+--- a/opengl/include/EGL/eglext.h
++++ b/opengl/include/EGL/eglext.h
+@@ -213,6 +213,7 @@ typedef EGLBoolean (EGLAPIENTRYP PFNEGLFENCENVPROC) (EGLSyncNV sync);
+ typedef EGLint (EGLAPIENTRYP PFNEGLCLIENTWAITSYNCNVPROC) (EGLSyncNV sync, EGLint flags, EGLTimeNV timeout);
+ typedef EGLBoolean (EGLAPIENTRYP PFNEGLSIGNALSYNCNVPROC) (EGLSyncNV sync, EGLenum mode);
+ typedef EGLBoolean (EGLAPIENTRYP PFNEGLGETSYNCATTRIBNVPROC) (EGLSyncNV sync, EGLint attribute, EGLint *value);
++typedef EGLClientBuffer (EGLAPIENTRYP PFNEGLGETRENDERBUFFERANDROIDPROC) (EGLDisplay dpy, EGLSurface draw);
+ #endif
+ 
+ #ifndef EGL_KHR_fence_sync
+@@ -272,6 +273,15 @@ typedef void (EGLAPIENTRYP PFNEGLSETBLOBCACHEFUNCSANDROIDPROC) (EGLDisplay dpy,
+         EGLSetBlobFuncANDROID set, EGLGetBlobFuncANDROID get);
+ #endif
+ 
++/* EGL_ANDROID_get_render_buffer
++ */
++#ifndef EGL_ANDROID_get_render_buffer
++#define EGL_ANDROID_get_render_buffer 1
++#ifdef EGL_EGLEXT_PROTOTYPES
++EGLAPI EGLClientBuffer EGLAPIENTRY eglGetRenderBufferANDROID(EGLDisplay dpy, EGLSurface draw);
++#endif
++#endif
++
+ /* EGL_IMG_hibernate_process
+  */
+ #ifndef EGL_IMG_hibernate_process
+diff --git a/opengl/libagl/egl.cpp b/opengl/libagl/egl.cpp
+index 172ef95..e650c33 100644
+--- a/opengl/libagl/egl.cpp
++++ b/opengl/libagl/egl.cpp
+@@ -166,6 +166,7 @@ struct egl_surface_t
+     virtual     EGLint      getSwapBehavior() const;
+     virtual     EGLBoolean  swapBuffers();
+     virtual     EGLBoolean  setSwapRectangle(EGLint l, EGLint t, EGLint w, EGLint h);
++    virtual     EGLClientBuffer getRenderBuffer() const;
+ protected:
+     GGLSurface              depth;
+ };
+@@ -209,6 +210,9 @@ EGLBoolean egl_surface_t::setSwapRectangle(
+ {
+     return EGL_FALSE;
+ }
++EGLClientBuffer egl_surface_t::getRenderBuffer() const {
++    return 0;
++}
+ 
+ // ----------------------------------------------------------------------------
+ 
+@@ -234,6 +238,7 @@ struct egl_window_surface_v2_t : public egl_surface_t
+     virtual     EGLint      getRefreshRate() const;
+     virtual     EGLint      getSwapBehavior() const;
+     virtual     EGLBoolean  setSwapRectangle(EGLint l, EGLint t, EGLint w, EGLint h);
++    virtual     EGLClientBuffer  getRenderBuffer() const;
+     
+ private:
+     status_t lock(ANativeWindowBuffer* buf, int usage, void** vaddr);
+@@ -581,6 +586,11 @@ EGLBoolean egl_window_surface_v2_t::setSwapRectangle(
+     return EGL_TRUE;
+ }
+ 
++EGLClientBuffer egl_window_surface_v2_t::getRenderBuffer() const
++{
++    return buffer;
++}
++
+ EGLBoolean egl_window_surface_v2_t::bindDrawSurface(ogles_context_t* gl)
+ {
+     GGLSurface buffer;
+@@ -811,6 +821,7 @@ static char const * const gExtensionsString =
+         // "KHR_image_pixmap "
+         "EGL_ANDROID_image_native_buffer "
+         "EGL_ANDROID_swap_rectangle "
++        "EGL_ANDROID_get_render_buffer "
+         ;
+ 
+ // ----------------------------------------------------------------------------
+@@ -871,6 +882,8 @@ static const extention_map_t gExtentionMap[] = {
+             (__eglMustCastToProperFunctionPointerType)&eglGetSyncAttribKHR },
+     { "eglSetSwapRectangleANDROID", 
+             (__eglMustCastToProperFunctionPointerType)&eglSetSwapRectangleANDROID }, 
++    { "eglGetRenderBufferANDROID",
++        (__eglMustCastToProperFunctionPointerType)&eglGetRenderBufferANDROID },
+ };
+ 
+ /*
+@@ -2164,3 +2177,18 @@ EGLBoolean eglSetSwapRectangleANDROID(EGLDisplay dpy, EGLSurface draw,
+ 
+     return EGL_TRUE;
+ }
++
++EGLClientBuffer eglGetRenderBufferANDROID(EGLDisplay dpy, EGLSurface draw)
++{
++    if (egl_display_t::is_valid(dpy) == EGL_FALSE)
++        return setError(EGL_BAD_DISPLAY, (EGLClientBuffer)0);
++
++    egl_surface_t* d = static_cast<egl_surface_t*>(draw);
++    if (!d->isValid())
++        return setError(EGL_BAD_SURFACE, (EGLClientBuffer)0);
++    if (d->dpy != dpy)
++        return setError(EGL_BAD_DISPLAY, (EGLClientBuffer)0);
++
++    // post the surface
++    return d->getRenderBuffer();
++}
+diff --git a/opengl/libs/EGL/eglApi.cpp b/opengl/libs/EGL/eglApi.cpp
+index 065faf2..40eac75 100644
+--- a/opengl/libs/EGL/eglApi.cpp
++++ b/opengl/libs/EGL/eglApi.cpp
+@@ -70,6 +70,8 @@ static const extention_map_t sExtentionMap[] = {
+             (__eglMustCastToProperFunctionPointerType)&eglCreateImageKHR },
+     { "eglDestroyImageKHR",
+             (__eglMustCastToProperFunctionPointerType)&eglDestroyImageKHR },
++    { "eglGetRenderBufferANDROID",
++        (__eglMustCastToProperFunctionPointerType)&eglGetRenderBufferANDROID },
+     { "eglGetSystemTimeFrequencyNV",
+             (__eglMustCastToProperFunctionPointerType)&eglGetSystemTimeFrequencyNV },
+     { "eglGetSystemTimeNV",
+@@ -1285,6 +1287,22 @@ EGLint eglWaitSyncANDROID(EGLDisplay dpy, EGLSyncKHR sync, EGLint flags)
+     return result;
+ }
+ 
++EGLClientBuffer eglGetRenderBufferANDROID(EGLDisplay dpy, EGLSurface draw)
++{
++    clearError();
++
++    const egl_display_ptr dp = validate_display(dpy);
++    if (!dp) return EGL_FALSE;
++
++    egl_surface_t const * const s = get_surface(draw);
++
++    egl_connection_t* const cnx = &gEGLImpl;
++    if (cnx->dso && cnx->egl.eglGetRenderBufferANDROID) {
++        return cnx->egl.eglGetRenderBufferANDROID(dp->disp.dpy, s->surface);
++    }
++    return setError(EGL_BAD_DISPLAY, (EGLClientBuffer*)0);
++}
++
+ // ----------------------------------------------------------------------------
+ // NVIDIA extensions
+ // ----------------------------------------------------------------------------
+-- 
+1.8.2.2
+

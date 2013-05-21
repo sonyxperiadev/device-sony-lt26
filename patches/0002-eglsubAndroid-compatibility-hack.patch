@@ -1,0 +1,44 @@
+From 65f85fa81de92cbf036d10b447f45c05b5cc8f7c Mon Sep 17 00:00:00 2001
+From: Johan Redestig <johan.redestig@sonymobile.com>
+Date: Fri, 12 Oct 2012 08:22:45 +0200
+Subject: [PATCH 2/2] eglsubAndroid compatibility hack
+
+Change-Id: I1d645f3bb3979ce36b6e26945bbfcf3ec5a737b0
+---
+ include/gui/SurfaceComposerClient.h | 2 ++
+ libs/gui/SurfaceComposerClient.cpp  | 6 ++++++
+ 2 files changed, 8 insertions(+)
+
+diff --git a/include/gui/SurfaceComposerClient.h b/include/gui/SurfaceComposerClient.h
+index ae5d69a..28baf70 100644
+--- a/include/gui/SurfaceComposerClient.h
++++ b/include/gui/SurfaceComposerClient.h
+@@ -66,6 +66,8 @@ public:
+ 
+     // Get information about a display
+     static status_t getDisplayInfo(const sp<IBinder>& display, DisplayInfo* info);
++    static status_t getDisplayInfo(int32_t display, DisplayInfo* info);
++
+ 
+     /* triggers screen off and waits for it to complete */
+     static void blankDisplay(const sp<IBinder>& display);
+diff --git a/libs/gui/SurfaceComposerClient.cpp b/libs/gui/SurfaceComposerClient.cpp
+index 80dd6ee..8391bcd 100644
+--- a/libs/gui/SurfaceComposerClient.cpp
++++ b/libs/gui/SurfaceComposerClient.cpp
+@@ -570,6 +570,12 @@ void SurfaceComposerClient::setDisplayProjection(const sp<IBinder>& token,
+ // ----------------------------------------------------------------------------
+ 
+ status_t SurfaceComposerClient::getDisplayInfo(
++        int32_t display, DisplayInfo* info)
++{
++    return ComposerService::getComposerService()->getDisplayInfo(0, info);
++}
++
++status_t SurfaceComposerClient::getDisplayInfo(
+         const sp<IBinder>& display, DisplayInfo* info)
+ {
+     return ComposerService::getComposerService()->getDisplayInfo(display, info);
+-- 
+1.8.2.2
+

@@ -1,0 +1,5 @@
+#!/bin/sh
+
+cd frameworks/native
+git apply ../../device/sony/lt26/patches/0001-egl-Reintroduce-eglGetRenderBufferANDROID.patch
+git apply ../../device/sony/lt26/patches/0002-eglsubAndroid-compatibility-hack.patch

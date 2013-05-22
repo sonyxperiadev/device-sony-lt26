@@ -22,13 +22,12 @@ http://developer.sonymobile.com/downloads/tool/software-binaries-for-xperia-s/
 In the root of your Android code tree unzip the SW_binaries_for_Xperia_S_v1.tar.zip,
 you should now have a directory named vendor/sony/lt26 in your tree.
 
-Applying patches
 Unfortunately the vendor binaries needs a couple of patches to be compatible with
 AOSP. Apply the patches by running the apply_patch tool in the root of you Android code
-tree:
-./device/sony/lt26/apply_patches
+tree.
 
 repo sync
+./device/sony/lt26/apply_patches
 lunch full_lt26-userdebug
 make
 

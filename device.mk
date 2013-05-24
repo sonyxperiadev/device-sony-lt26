@@ -25,7 +25,8 @@ PRODUCT_COPY_FILES += \
 
 PRODUCT_PACKAGES := \
     lights.lt26 \
-    e2fsck
+    e2fsck \
+    sensors.default
 
 PRODUCT_CHARACTERISTICS := nosdcard
 
@@ -79,7 +80,8 @@ PRODUCT_COPY_FILES += \
    $(LOCAL_PATH)/config/gpio-key.kl:system/usr/keylayout/gpio-key.kl \
    $(LOCAL_PATH)/config/keypad-pmic-fuji.kl:system/usr/keylayout/keypad-pmic-fuji.kl \
    $(LOCAL_PATH)/config/pmic8058_pwrkey.kl:system/usr/keylayout/pmic8058_pwrkey.kl \
-   $(LOCAL_PATH)/config/simple_remote.kl:system/usr/keylayout/simple_remote.kl
+   $(LOCAL_PATH)/config/simple_remote.kl:system/usr/keylayout/simple_remote.kl \
+   $(LOCAL_PATH)/rootdir/system/etc/sensors.conf:system/etc/sensors.conf
 
 $(call inherit-product, frameworks/native/build/phone-xhdpi-1024-dalvik-heap.mk)
 
@@ -92,4 +94,7 @@ $(call inherit-product-if-exists, hardware/broadcom/wlan/bcmdhd/firmware/bcm4330
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/config/calibration:system/etc/wifi/calibration
+
+SOMC_CFG_SENSORS_PROXIMITY_APDS9702 := yes
+SOMC_CFG_SENSORS_ACCEL_BMA250NA_INPUT := yes
 

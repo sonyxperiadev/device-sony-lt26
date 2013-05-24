@@ -13,6 +13,7 @@ Put the following snippet in .repo/local_manifests/lt26.xml
 <manifest>
   <remote  name="sony" fetch="git://github.com/sonyxperiadev/" />
   <project path="device/sony/lt26" name="device-sony-lt26" remote="sony" revision="master" />
+  <project path="vendor/sony/dash" name="DASH.git" groups="device" revision="master" remote="sony" />
   <remove-project name="platform/hardware/invensense" />
 </manifest>
 

@@ -33,6 +33,7 @@ AOSP. Apply the patches by running the `apply_patch` tool in the root of your An
 tree.
 
 * `repo sync`
+* `source ./build/envsetup.sh`
 * `./device/sony/lt26/apply_patches`
 * `lunch full_lt26-userdebug`
 * `make`

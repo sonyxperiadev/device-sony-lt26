@@ -21,7 +21,7 @@ Put the following snippet in `.repo/local_manifests/lt26.xml`:
 ```
 
 Download the zip file with vendor binaries from:
-http://developer.sonymobile.com/downloads/tool/software-binaries-for-xperia-s/
+http://developer.sonymobile.com/knowledge-base/open-source/android-open-source-project-for-xperia-devices/
 
 In the root of your Android code tree unzip the `SW_binaries_for_Xperia_S_v1.tar.zip`.
 
